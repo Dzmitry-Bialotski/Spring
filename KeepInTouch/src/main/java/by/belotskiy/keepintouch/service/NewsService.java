@@ -1,11 +1,13 @@
 package by.belotskiy.keepintouch.service;
 
+import by.belotskiy.keepintouch.exception.NoSuchNewsException;
 import by.belotskiy.keepintouch.model.News;
 import by.belotskiy.keepintouch.repostiory.NewsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -17,23 +19,55 @@ public class NewsService {
         this.newsRepository = newsRepository;
     }
 
-    public Optional<News> findNewsById(Integer id) {
-        return newsRepository.findById(id);
+    public News findById(int id){
+        Optional<News> optionalNews = newsRepository.findById(id);
+        if (optionalNews.isPresent()) {
+            return optionalNews.get();
+        } else {
+            throw new NoSuchNewsException("There is no news with ID = " + id);
+        }
     }
 
-    public Page<News> findNewsByTitle(String title, Pageable pageable){
-        return newsRepository.findNewsByTitleContainingOrderByDateAsc(title, pageable);
+    public Page<News> findAll(Pageable pageable){
+        return newsRepository.findAll(pageable);
     }
 
-    public News saveNews(News news) {
+    public Page<News> findAllByTitle(String title, Pageable pageable){
+        Page<News> news;
+        if(title != null && !title.isEmpty()){
+            news = newsRepository.findAllByTitle(title, pageable);
+        } else {
+            news = findAll(pageable);
+        }
+        return news;
+    }
+
+    public Page<News> findAllByAuthorId(String authorId, Pageable pageable){
+        int id = Integer.parseInt(authorId);
+        return newsRepository.findAllByAuthorId(id, pageable);
+    }
+
+    public News save(News news){
+        news.setPublishedAt(Instant.now());
         return newsRepository.save(news);
     }
 
-    public void deleteNewsById(Integer id) {
-        newsRepository.deleteById(id);
+    public News update(News news){
+        boolean isExists = findById(news.getId()) != null;
+        if(isExists){
+            news.setPublishedAt(Instant.now());
+            return newsRepository.save(news);
+        }
+        else {
+            throw new NoSuchNewsException("There is no news with ID = " + news.getId());
+        }
     }
 
-    public Page<News> findAllNews(Pageable pageable) {
-        return newsRepository.findAll(pageable);
+    public void delete(int id){
+        if (findById(id) != null) {
+            newsRepository.deleteById(id);
+        } else {
+            throw new NoSuchNewsException("There is no news with ID = " + id);
+        }
     }
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="news")
@@ -21,7 +22,7 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Instant date;
+    private Instant publishedAt;
 
     private String sourceName;
 
@@ -43,4 +44,7 @@ public class News {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User author;
+
+    @OneToMany(mappedBy = "news", fetch = FetchType.LAZY)
+    private Set<Like> Likes;
 }

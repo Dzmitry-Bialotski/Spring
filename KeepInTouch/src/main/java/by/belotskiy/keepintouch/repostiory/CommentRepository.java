@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-    Page<Comment> findCommentsByNews_IdOrderByDateAsc(Integer news_id, Pageable pageable);
 }

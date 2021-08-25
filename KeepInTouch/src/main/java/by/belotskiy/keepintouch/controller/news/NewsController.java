@@ -1,10 +1,10 @@
-package by.belotskiy.keepintouch.controller;
+package by.belotskiy.keepintouch.controller.news;
 
 import by.belotskiy.keepintouch.dto.NewsDto;
 import by.belotskiy.keepintouch.dto.mapper.DtoMapper;
-import by.belotskiy.keepintouch.exception.NoSuchNewsException;
 import by.belotskiy.keepintouch.model.News;
 import by.belotskiy.keepintouch.service.NewsService;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,11 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -32,33 +28,27 @@ public class NewsController {
     }
 
     @GetMapping("/news")
-    public ResponseEntity<Map<String, Object>> getAllNewsPage(
+    public NewsPageResponse getAllNewsPage(
             @RequestParam(required = false, defaultValue = "") String title,
             @PageableDefault(
                     sort={"publishedAt"},
                     direction = Sort.Direction.ASC
             ) Pageable pageable) {
-        Page<News> pageNews;
-        if (title == null){
-            pageNews = newsService.findAll(pageable);
-        }else{
-            pageNews = newsService.findAllByTitle(title, pageable);
-        }
+        Page<News> pageNews = newsService.findAllByTitle(title, pageable);
+        List<NewsDto> newsDtoList = dtoMapper.mapPageToList(pageNews);
+        return new NewsPageResponse(newsDtoList, pageNews.getSize(), pageNews.getNumber());
+    }
 
-        List<NewsDto> newsDtos = pageNews.getContent().stream()
-                .map(n -> dtoMapper.mapToDto(n))
-                .collect(Collectors.toList());
-
-        if (newsDtos.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("news", newsDtos);
-        response.put("sort", pageNews.getSort());
-        response.put("size", pageNews.getSize());
-        response.put("page", pageNews.getNumber());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @GetMapping("/news/author/{authorId}")
+    public NewsPageResponse getAllNewsPageByAuthorId(
+            @PageableDefault(
+                    sort = {"publishedAt"},
+                    direction = Sort.Direction.ASC
+            ) Pageable pageable,
+            @PathVariable String authorId) {
+        Page<News> pageNews = newsService.findAllByAuthorId(authorId, pageable);
+        List<NewsDto> newsDtoList = dtoMapper.mapPageToList(pageNews);
+        return new NewsPageResponse(newsDtoList, pageNews.getSize(), pageNews.getNumber());
     }
 
     @GetMapping("/news/{newsId}")

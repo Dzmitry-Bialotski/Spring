@@ -1,5 +1,6 @@
 package by.belotskiy.keepintouch;
 
+import by.belotskiy.keepintouch.dto.mapper.DtoMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,13 +26,9 @@ public class KeepInTouchApplication {
     }
 
     @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
-    @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2).select()
                 .apis(RequestHandlerSelectors.basePackage("by.belotskiy.keepintouch")).build();
     }
+
 }

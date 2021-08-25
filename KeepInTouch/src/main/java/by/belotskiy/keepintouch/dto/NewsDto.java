@@ -21,4 +21,7 @@ public class NewsDto {
 
     private String content;
 
+    private Integer likesCount;
+
+    private boolean liked;
 }

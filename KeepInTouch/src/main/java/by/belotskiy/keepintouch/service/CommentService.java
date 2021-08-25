@@ -23,7 +23,8 @@ public class CommentService {
     }
 
     public Page<Comment> findCommentsByNews(News news, Pageable pageable){
-        return commentRepository.findCommentsByNews_IdOrderByDateAsc(news.getId(), pageable);
+        //return commentRepository.findCommentsByNews_IdOrderByDateAsc(news.getId(), pageable);
+        return null;
     }
 
     public Comment saveComment(Comment comment) {

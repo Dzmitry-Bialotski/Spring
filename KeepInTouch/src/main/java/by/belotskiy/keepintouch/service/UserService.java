@@ -1,6 +1,6 @@
 package by.belotskiy.keepintouch.service;
 
-import by.belotskiy.keepintouch.model.Role;
+import by.belotskiy.keepintouch.model.enums.Role;
 import by.belotskiy.keepintouch.model.User;
 import by.belotskiy.keepintouch.repostiory.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

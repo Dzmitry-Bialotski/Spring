@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Integer> {
 
-    Page<News> findNewsByTitleContainingOrderByDateAsc(String partOfTitle, Pageable pageable);
-
+    Page<News> findAllByAuthorId(int authorId, Pageable pageable);
+    Page<News> findAllByTitle(String title, Pageable pageable);
 }

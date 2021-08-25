@@ -1,4 +1,4 @@
-package by.belotskiy.keepintouch.model;
+package by.belotskiy.keepintouch.model.enums;
 
 public enum Role {
     USER("ROLE_USER"),
