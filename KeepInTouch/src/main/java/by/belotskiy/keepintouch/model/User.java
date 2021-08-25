@@ -4,6 +4,7 @@ package by.belotskiy.keepintouch.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -20,7 +21,12 @@ public class User {
     @Column
     private String password;
 
-
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private Set<News> news;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private Set<Comment> comments;
 }
