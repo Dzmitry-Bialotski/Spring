@@ -1,4 +1,4 @@
-package by.belotskiy.keepintouch.controller.auth;
+package by.belotskiy.keepintouch.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

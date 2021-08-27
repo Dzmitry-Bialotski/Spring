@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
+    Page<Comment> findAllByNewsId(int newsId, Pageable pageable);
+
 }

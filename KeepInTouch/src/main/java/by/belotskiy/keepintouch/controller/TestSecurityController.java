@@ -1,4 +1,4 @@
-package by.belotskiy.keepintouch.controller.auth;
+package by.belotskiy.keepintouch.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

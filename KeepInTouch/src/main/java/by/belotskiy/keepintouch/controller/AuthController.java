@@ -1,6 +1,9 @@
-package by.belotskiy.keepintouch.controller.auth;
+package by.belotskiy.keepintouch.controller;
 
 import by.belotskiy.keepintouch.config.jwt.JwtProvider;
+import by.belotskiy.keepintouch.controller.request.AuthRequest;
+import by.belotskiy.keepintouch.controller.request.RegistrationRequest;
+import by.belotskiy.keepintouch.controller.response.AuthResponse;
 import by.belotskiy.keepintouch.model.User;
 import by.belotskiy.keepintouch.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;

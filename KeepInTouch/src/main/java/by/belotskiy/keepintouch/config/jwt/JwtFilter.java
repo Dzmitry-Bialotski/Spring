@@ -2,6 +2,7 @@ package by.belotskiy.keepintouch.config.jwt;
 
 import by.belotskiy.keepintouch.config.CustomUserDetails;
 import by.belotskiy.keepintouch.config.CustomUserDetailsService;
+import by.belotskiy.keepintouch.exception.AuthException;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +43,8 @@ public class JwtFilter extends GenericFilterBean {
             CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
+        } else {
+            throw new AuthException("Invalid token provided");
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

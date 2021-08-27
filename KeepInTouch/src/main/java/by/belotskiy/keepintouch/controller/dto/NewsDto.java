@@ -1,9 +1,13 @@
-package by.belotskiy.keepintouch.dto;
+package by.belotskiy.keepintouch.controller.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class NewsDto {
+
+    private int id;
 
     private String sourceName;
 
@@ -21,7 +25,7 @@ public class NewsDto {
 
     private String content;
 
-    private Integer likesCount;
+    private int likesCount;
 
     private boolean liked;
 }

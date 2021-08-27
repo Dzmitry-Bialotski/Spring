@@ -1,7 +1,5 @@
 package by.belotskiy.keepintouch;
 
-import by.belotskiy.keepintouch.dto.mapper.DtoMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
