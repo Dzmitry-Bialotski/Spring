@@ -23,7 +23,6 @@ public class AuthController {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
     }
-
     @PostMapping("/register")
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         if(userService.findUserByLogin(registrationRequest.getLogin()) != null){

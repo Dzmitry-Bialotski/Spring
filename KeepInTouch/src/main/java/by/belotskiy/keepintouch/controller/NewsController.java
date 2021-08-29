@@ -3,8 +3,8 @@ package by.belotskiy.keepintouch.controller;
 import by.belotskiy.keepintouch.config.CustomUserDetails;
 import by.belotskiy.keepintouch.controller.dto.NewsDto;
 import by.belotskiy.keepintouch.controller.dto.mapper.DtoMapper;
-import by.belotskiy.keepintouch.exception.AuthException;
 import by.belotskiy.keepintouch.model.News;
+import by.belotskiy.keepintouch.service.FileService;
 import by.belotskiy.keepintouch.service.NewsService;
 
 import org.springframework.data.domain.Pageable;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -21,10 +22,12 @@ import org.springframework.web.bind.annotation.*;
 public class NewsController {
 
     private final NewsService newsService;
+    private final FileService fileService;
     private final DtoMapper dtoMapper;
 
-    public NewsController(NewsService newsService, DtoMapper dtoMapper) {
+    public NewsController(NewsService newsService, FileService fileService, DtoMapper dtoMapper) {
         this.newsService = newsService;
+        this.fileService = fileService;
         this.dtoMapper = dtoMapper;
     }
 
@@ -61,7 +64,10 @@ public class NewsController {
 
     @PostMapping
     public NewsDto addNews(@RequestBody News news,
-                           @AuthenticationPrincipal CustomUserDetails userDetails) {
+                           @AuthenticationPrincipal CustomUserDetails userDetails,
+                           @RequestParam("file") MultipartFile file
+                           ) {
+        news = fileService.saveNewsPhoto(file, news);
         news = newsService.save(news, userDetails.getUsername());
         return dtoMapper.mapToDto(news);
     }
