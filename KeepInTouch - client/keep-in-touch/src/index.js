@@ -2,32 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import RequestSender from './fetch/RequestSender'
-
-let requestSender = new RequestSender()
-requestSender
-  .auth({
-    login: "dimasiandro",
-    password: "1234"
-  })
-  .then((res) => {
-    console.log('auth result: ', res)
-    // requestSender.token = res.token
-    // requestSender.saveNews({
-    //   title: "news",
-    //   sourceName: "source",
-    //   content: "that`s some content about news",
-    //   description: "that`s some description about news"
-    // }).then((res) => {
-    //     console.log('saved news: ', res)
-    //})
-  })
-
-
+import {Provider} from "react-redux";
+import {store} from "./store/store";
+import {Elements} from "@stripe/react-stripe-js";
+import {ELEMENTS_OPTIONS, stripePromise} from "./stripe/stripe";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Elements>
   </React.StrictMode>,
   document.getElementById('root')
 );

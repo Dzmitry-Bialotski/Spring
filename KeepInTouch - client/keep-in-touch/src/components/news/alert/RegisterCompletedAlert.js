@@ -1,0 +1,42 @@
+import React from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+import {useDispatch, useSelector} from "react-redux";
+import {hideRegisterCompleted} from "../../../store/actions";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+export default function RegisterCompletedAlert() {
+  const classes = useStyles();
+  const registerCompleted = useSelector(state => state.alert.showRegisterCompleted)
+  const dispatch = useDispatch()
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch(hideRegisterCompleted())
+  };
+
+  return (
+    <div className={classes.root}>
+      <Snackbar open={registerCompleted} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Register Completed
+        </Alert>
+      </Snackbar>
+    </div>
+  );
+}

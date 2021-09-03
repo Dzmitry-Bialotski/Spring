@@ -1,7 +1,7 @@
 class RequestSender {
 
-    constructor(_token = "") {
-      this._token = _token
+    constructor(token) {
+      this.token = token || localStorage.getItem('token') || ''
       this._hostname = "http://localhost:8081/"
     }
 
@@ -17,16 +17,26 @@ class RequestSender {
     return this._hostname
   }
 
-  async sendRequest(method, url, body = {}) {
-    const response = await fetch(this.hostname + url, {
-      method: method,
-      headers: {
-        "Content-type": 'application/json',
-        "Authorization": `Bearer ${this.token}`
-      },
-      body: JSON.stringify(body)
-    })
-
+  async sendRequest(method, url, body = null) {
+      let response;
+      if(body){
+        response = await fetch(this.hostname + url, {
+          method: method,
+          headers: {
+            "Content-type": 'application/json',
+            "Authorization": `Bearer ${this.token}`
+          },
+          body: JSON.stringify(body)
+        })
+      }else {
+        response = await fetch(this.hostname + url, {
+          method: method,
+          headers: {
+            "Content-type": 'application/json',
+            "Authorization": `Bearer ${this.token}`
+          },
+        })
+      }
     return await response.json();
   }
   /**fetch api from auth controller*/
@@ -71,12 +81,11 @@ class RequestSender {
     return await this.sendRequest('GET', `comments/${id}`)
   }
 
-  async getCommentsByNewsId(newsId, page, size, sort){
+  async getCommentsByNewsId(newsId, page = '', size = '', sort = ''){
     return await this.sendRequest('GET', `comments/news/${newsId}?page=${page}&size=${size}&sort=${sort}`)
   }
-
-  async getAllComments(page, size, sort){
-    return await this.sendRequest('GET', `comments/news?page=${page}&size=${size}&sort=${sort}`)
+  async getAllComments(page = '', size = '', sort = ''){
+    return await this.sendRequest('GET', `comments?page=${page}&size=${size}&sort=${sort}`)
   }
 
   async saveComment(commentBody){
@@ -99,4 +108,4 @@ class RequestSender {
 
 }
 
-export default RequestSender;
+export const requestSender = new RequestSender()

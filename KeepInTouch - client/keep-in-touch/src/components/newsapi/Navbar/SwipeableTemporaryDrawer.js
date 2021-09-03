@@ -10,7 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import {ThemeProvider, useMediaQuery} from "@material-ui/core";
 import { createTheme } from '@material-ui/core/styles'
-import categories from "../../data/categories";
+import categories from "../data/categories";
 
 const useStyles = makeStyles({
   list: {
