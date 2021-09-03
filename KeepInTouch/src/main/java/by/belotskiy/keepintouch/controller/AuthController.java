@@ -4,6 +4,7 @@ import by.belotskiy.keepintouch.config.jwt.JwtProvider;
 import by.belotskiy.keepintouch.controller.request.AuthRequest;
 import by.belotskiy.keepintouch.controller.request.RegistrationRequest;
 import by.belotskiy.keepintouch.controller.response.AuthResponse;
+import by.belotskiy.keepintouch.controller.response.RegisterResponse;
 import by.belotskiy.keepintouch.model.User;
 import by.belotskiy.keepintouch.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,24 +25,27 @@ public class AuthController {
         this.jwtProvider = jwtProvider;
     }
     @PostMapping("/register")
-    public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
+    public RegisterResponse registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
+        RegisterResponse registerResponse = new RegisterResponse();
         if(userService.findUserByLogin(registrationRequest.getLogin()) != null){
-            return "user exists";
+            registerResponse.setErrorMessage("user exists");
+            return registerResponse;
         }
         User user = new User();
         user.setPassword(registrationRequest.getPassword());
         user.setLogin(registrationRequest.getLogin());
         userService.saveUser(user);
-        return "OK";
+        registerResponse.setMessage("OK");
+        return registerResponse;
     }
 
     @PostMapping("/auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
         User user = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         if(user == null){
-            return new AuthResponse(null, "invalid login or password");
+            return new AuthResponse(null, "","invalid login or password");
         }
         String token = jwtProvider.generateToken(user.getLogin());
-        return new AuthResponse(token, "");
+        return new AuthResponse(token, user.getRole().toString(),"");
     }
 }

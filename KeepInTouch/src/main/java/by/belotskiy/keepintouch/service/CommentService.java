@@ -35,7 +35,7 @@ public class CommentService {
     }
 
     public Page<Comment> findAllByNewsId(int newId, Pageable pageable){
-        return commentRepository.findAllByNewsId(newId, pageable);
+        return commentRepository.findAllByNews_Id(newId, pageable);
     }
 
     public Comment findById(int id){

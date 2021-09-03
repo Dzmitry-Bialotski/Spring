@@ -2,14 +2,14 @@ package by.belotskiy.keepintouch.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class AuthResponse {
+@NoArgsConstructor
+public class RegisterResponse {
 
-    private String token;
-
-    private String role;
+    private String message;
 
     private String errorMessage;
 }

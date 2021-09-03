@@ -36,7 +36,7 @@ public class NewsController {
             @RequestParam(required = false, defaultValue = "") String title,
             @PageableDefault(
                     sort={"publishedAt"},
-                    direction = Sort.Direction.ASC
+                    direction = Sort.Direction.DESC
             ) Pageable pageable,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
@@ -48,7 +48,7 @@ public class NewsController {
     public PageResponse<NewsDto> getAllNewsPageByAuthorId(
             @PageableDefault(
                     sort = {"publishedAt"},
-                    direction = Sort.Direction.ASC
+                    direction = Sort.Direction.DESC
             ) Pageable pageable,
             @PathVariable Integer authorId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -64,10 +64,10 @@ public class NewsController {
 
     @PostMapping
     public NewsDto addNews(@RequestBody News news,
-                           @AuthenticationPrincipal CustomUserDetails userDetails,
-                           @RequestParam("file") MultipartFile file
+                           @AuthenticationPrincipal CustomUserDetails userDetails
+//                           ,@RequestParam("file") MultipartFile file
                            ) {
-        news = fileService.saveNewsPhoto(file, news);
+//        news = fileService.saveNewsPhoto(file, news);
         news = newsService.save(news, userDetails.getUsername());
         return dtoMapper.mapToDto(news);
     }

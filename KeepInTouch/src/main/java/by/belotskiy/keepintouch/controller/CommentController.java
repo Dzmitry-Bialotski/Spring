@@ -34,7 +34,7 @@ public class CommentController {
     public PageResponse<CommentDto> getAllComments(
             @PageableDefault(
                     sort = {"publishedAt"},
-                    direction = Sort.Direction.ASC
+                    direction = Sort.Direction.DESC
             ) Pageable pageable) {
         Page<Comment> commentPage = commentService.findAll(pageable);
         List<CommentDto> commentDtoList = dtoMapper.mapCommentPageToList(commentPage);
@@ -45,7 +45,7 @@ public class CommentController {
     public PageResponse<CommentDto> getAllCommentsByNewsId(
             @PageableDefault(
                     sort = {"publishedAt"},
-                    direction = Sort.Direction.ASC
+                    direction = Sort.Direction.DESC
             ) Pageable pageable,
             @PathVariable Integer newsId) {
         Page<Comment> commentPage = commentService.findAllByNewsId(newsId, pageable);
